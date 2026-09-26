@@ -1,58 +1,1767 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Le Poison</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Le Poison | AI · Robotics · Automation</title>
+
+  <meta
+    name="description"
+    content="Le Poison personal technology space. AI, Agent, Robotics, Automation and intelligent systems."
+  />
+
   <style>
+    /* =========================
+       BASIC
+    ========================== */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    :root {
+      --bg: #05070d;
+      --bg-soft: #090d18;
+      --card: rgba(255, 255, 255, 0.045);
+      --card-hover: rgba(255, 255, 255, 0.08);
+
+      --text: #f6f7fb;
+      --muted: #9098ad;
+
+      --blue: #4c8dff;
+      --purple: #935cff;
+      --cyan: #2ee8ff;
+
+      --border: rgba(255, 255, 255, 0.11);
+
+      --max: 1180px;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      max-width: 900px;
-      margin: 80px auto;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(76, 141, 255, 0.09), transparent 30%),
+        radial-gradient(circle at 80% 30%, rgba(147, 92, 255, 0.08), transparent 30%),
+        var(--bg);
+
+      color: var(--text);
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    ::selection {
+      background: var(--blue);
+      color: white;
+    }
+
+    /* =========================
+       BACKGROUND CANVAS
+    ========================== */
+
+    #particles {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -4;
+    }
+
+    .grid {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+
+      background-image:
+        linear-gradient(rgba(255,255,255,.026) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.026) 1px, transparent 1px);
+
+      background-size: 58px 58px;
+
+      mask-image: linear-gradient(
+        to bottom,
+        black,
+        rgba(0,0,0,.75),
+        transparent
+      );
+
+      animation: gridMove 18s linear infinite;
+    }
+
+    @keyframes gridMove {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(58px);
+      }
+    }
+
+    /* =========================
+       CURSOR GLOW
+    ========================== */
+
+    .cursor-glow {
+      position: fixed;
+
+      width: 420px;
+      height: 420px;
+
+      border-radius: 50%;
+
+      background: radial-gradient(
+        circle,
+        rgba(76,141,255,.14),
+        rgba(147,92,255,.07),
+        transparent 68%
+      );
+
+      pointer-events: none;
+      z-index: -2;
+
+      transform: translate(-50%, -50%);
+
+      transition:
+        left .12s linear,
+        top .12s linear;
+    }
+
+    /* =========================
+       NAV
+    ========================== */
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+
+      z-index: 100;
+
+      background: rgba(5, 7, 13, 0.64);
+      backdrop-filter: blur(16px);
+
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+
+    .nav-inner {
+      max-width: var(--max);
+      margin: auto;
+
+      height: 72px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
       padding: 0 24px;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: 4px;
+      font-size: 16px;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .nav-links a {
+      transition: .25s;
+    }
+
+    .nav-links a:hover {
+      color: white;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      font-size: 12px;
+      color: #7affb2;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+      background: #4cff99;
+
+      box-shadow: 0 0 14px #4cff99;
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+
+    .hero {
+      min-height: 100vh;
+
+      max-width: var(--max);
+      margin: auto;
+
+      padding:
+        160px 24px
+        80px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-label {
+      font-size: 12px;
+      letter-spacing: 4px;
+      color: var(--cyan);
+
+      margin-bottom: 26px;
+    }
+
+    .hero-title {
+      font-size: clamp(62px, 11vw, 150px);
+
+      line-height: .85;
+
+      letter-spacing: -7px;
+
+      font-weight: 900;
+
+      max-width: 1000px;
+    }
+
+    .gradient-text {
+      background:
+        linear-gradient(
+          100deg,
+          #ffffff 10%,
+          #7ca7ff 42%,
+          #b98aff 72%,
+          #6be7ff 100%
+        );
+
+      -webkit-background-clip: text;
+      background-clip: text;
+
+      color: transparent;
+
+      background-size: 200% 200%;
+
+      animation: gradientMove 7s ease infinite;
+    }
+
+    @keyframes gradientMove {
+
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+
+    }
+
+    .type-line {
+      margin-top: 40px;
+
+      font-size: clamp(20px, 3vw, 34px);
+
+      color: #b6bdd0;
+
+      font-weight: 500;
+
+      min-height: 48px;
+    }
+
+    #typewriter {
+      color: white;
+    }
+
+    .cursor {
+      display: inline-block;
+
+      width: 3px;
+      height: 28px;
+
+      margin-left: 5px;
+
+      background: var(--cyan);
+
+      vertical-align: middle;
+
+      animation: blink .7s infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .hero-desc {
+      margin-top: 30px;
+
+      max-width: 650px;
+
+      color: var(--muted);
+
+      line-height: 1.8;
+
+      font-size: 16px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 14px;
+
+      margin-top: 42px;
+    }
+
+    .btn {
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 15px 24px;
+
+      border-radius: 999px;
+
+      font-size: 13px;
+      font-weight: 600;
+
+      border: 1px solid var(--border);
+
+      transition: all .25s ease;
+    }
+
+    .btn-primary {
+      background: white;
+      color: #070911;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+
+      box-shadow:
+        0 10px 35px
+        rgba(255,255,255,.15);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,.035);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,.08);
+      transform: translateY(-3px);
+    }
+
+    .scroll-hint {
+      margin-top: 70px;
+
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      color: #60687d;
+
+      font-size: 11px;
+
+      letter-spacing: 3px;
+    }
+
+    .scroll-line {
+      width: 70px;
+      height: 1px;
+
+      background:
+        linear-gradient(
+          to right,
+          var(--cyan),
+          transparent
+        );
+    }
+
+    /* =========================
+       SECTIONS
+    ========================== */
+
+    section {
+      max-width: var(--max);
+
+      margin: auto;
+
+      padding: 120px 24px;
+    }
+
+    .section-number {
+      color: var(--cyan);
+
+      font-size: 11px;
+
+      letter-spacing: 3px;
+
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(36px, 5vw, 64px);
+
+      margin-bottom: 20px;
+
+      letter-spacing: -2px;
+    }
+
+    .section-desc {
+      max-width: 650px;
+
+      color: var(--muted);
+
+      line-height: 1.8;
+
+      margin-bottom: 55px;
+    }
+
+    /* =========================
+       PROJECTS
+    ========================== */
+
+    .project-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 18px;
+    }
+
+    .project {
+      position: relative;
+
+      min-height: 280px;
+
+      padding: 30px;
+
+      border: 1px solid var(--border);
+
+      border-radius: 24px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.055),
+          rgba(255,255,255,.018)
+        );
+
+      backdrop-filter: blur(16px);
+
+      transition:
+        transform .18s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+
+      transform-style: preserve-3d;
+
+      overflow: hidden;
+    }
+
+    .project::before {
+      content: "";
+
+      position: absolute;
+
+      width: 180px;
+      height: 180px;
+
+      border-radius: 50%;
+
+      right: -70px;
+      top: -70px;
+
+      background:
+        radial-gradient(
+          circle,
+          rgba(76,141,255,.25),
+          transparent 70%
+        );
+
+      opacity: 0;
+
+      transition: .3s;
+    }
+
+    .project:hover::before {
+      opacity: 1;
+    }
+
+    .project:hover {
+      border-color:
+        rgba(111,160,255,.45);
+
+      box-shadow:
+        0 24px 80px
+        rgba(0,0,0,.35);
+    }
+
+    .project-index {
+      color: #59627a;
+
+      font-size: 12px;
+
+      letter-spacing: 2px;
+    }
+
+    .project h3 {
+      margin-top: 62px;
+
+      font-size: 30px;
+    }
+
+    .project p {
+      margin-top: 14px;
+
+      color: var(--muted);
+
+      max-width: 400px;
+
       line-height: 1.7;
     }
 
-    h1 {
-      font-size: 48px;
-      margin-bottom: 10px;
+    .tags {
+      position: absolute;
+
+      bottom: 25px;
+      left: 30px;
+
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 8px;
     }
 
-    .subtitle {
-      font-size: 20px;
-      color: #666;
+    .tag {
+      font-size: 10px;
+
+      letter-spacing: 1px;
+
+      padding: 7px 10px;
+
+      border-radius: 999px;
+
+      border: 1px solid var(--border);
+
+      color: #bac2d5;
     }
 
-    .section {
-      margin-top: 50px;
+    /* =========================
+       ABOUT
+    ========================== */
+
+    .about-grid {
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap: 60px;
+
+      align-items: center;
     }
+
+    .about-text {
+      color: var(--muted);
+
+      line-height: 2;
+
+      font-size: 16px;
+    }
+
+    .about-stats {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
+      gap: 14px;
+    }
+
+    .stat {
+      padding: 26px;
+
+      border: 1px solid var(--border);
+
+      border-radius: 20px;
+
+      background: var(--card);
+    }
+
+    .stat-value {
+      font-size: 27px;
+      font-weight: 800;
+    }
+
+    .stat-label {
+      margin-top: 6px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+    }
+
+    /* =========================
+       TECH
+    ========================== */
+
+    .tech-list {
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 12px;
+    }
+
+    .tech {
+      padding: 14px 18px;
+
+      border-radius: 12px;
+
+      border: 1px solid var(--border);
+
+      color: #c5cbda;
+
+      background: rgba(255,255,255,.025);
+
+      transition: .25s;
+    }
+
+    .tech:hover {
+      border-color: var(--cyan);
+
+      color: white;
+
+      transform: translateY(-4px);
+    }
+
+    /* =========================
+       CONTACT
+    ========================== */
+
+    .contact-box {
+      border: 1px solid var(--border);
+
+      border-radius: 28px;
+
+      padding:
+        60px 45px;
+
+      background:
+        linear-gradient(
+          120deg,
+          rgba(76,141,255,.08),
+          rgba(147,92,255,.06),
+          rgba(255,255,255,.02)
+        );
+    }
+
+    .contact-title {
+      font-size: clamp(38px, 6vw, 70px);
+
+      letter-spacing: -3px;
+    }
+
+    .contact-box p {
+      color: var(--muted);
+
+      margin-top: 20px;
+
+      line-height: 1.8;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    footer {
+      max-width: var(--max);
+
+      margin: auto;
+
+      padding:
+        30px 24px
+        50px;
+
+      display: flex;
+      justify-content: space-between;
+
+      border-top:
+        1px solid rgba(255,255,255,.08);
+
+      color: #60687d;
+
+      font-size: 11px;
+    }
+
+    /* =========================
+       REVEAL
+    ========================== */
+
+    .reveal {
+      opacity: 0;
+
+      transform: translateY(35px);
+
+      transition:
+        opacity .8s ease,
+        transform .8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+
+      transform: translateY(0);
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media (max-width: 800px) {
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero-title {
+        letter-spacing: -4px;
+      }
+
+      .project-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 130px;
+      }
+
+      .contact-box {
+        padding: 40px 25px;
+      }
+
+      footer {
+        flex-direction: column;
+
+        gap: 12px;
+      }
+
+    }
+
   </style>
 </head>
 
 <body>
 
-  <h1>Le Poison</h1>
+  <canvas id="particles"></canvas>
 
-  <p class="subtitle">
-    AI · Agent · Automation · Developer
-  </p>
+  <div class="grid"></div>
 
-  <div class="section">
-    <h2>About</h2>
-    <p>
-      Personal website for AI, automation, software testing and experimental projects.
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- NAV -->
+
+  <nav>
+
+    <div class="nav-inner">
+
+      <div class="brand">
+        LE POISON<span>_</span>
+      </div>
+
+      <div class="nav-links">
+
+        <a href="#projects">PROJECTS</a>
+
+        <a href="#about">ABOUT</a>
+
+        <a href="#stack">STACK</a>
+
+        <a href="#contact">CONTACT</a>
+
+      </div>
+
+      <div class="status">
+
+        <div class="status-dot"></div>
+
+        ONLINE
+
+      </div>
+
+    </div>
+
+  </nav>
+
+
+  <!-- HERO -->
+
+  <main class="hero">
+
+    <div class="hero-label">
+      SYSTEM / ONLINE
+    </div>
+
+    <h1 class="hero-title">
+
+      BUILDING
+
+      <br />
+
+      <span class="gradient-text">
+        INTELLIGENCE.
+      </span>
+
+    </h1>
+
+    <div class="type-line">
+
+      I BUILD
+
+      <span id="typewriter"></span>
+
+      <span class="cursor"></span>
+
+    </div>
+
+    <p class="hero-desc">
+
+      AI, robotics, automation and intelligent systems.
+
+      Building tools that connect software intelligence
+      with the real world.
+
     </p>
-  </div>
 
-  <div class="section">
-    <h2>Projects</h2>
-    <ul>
-      <li>AI Agent</li>
-      <li>Automation Testing</li>
-      <li>Digital Employee</li>
-      <li>AI News System</li>
-    </ul>
-  </div>
+    <div class="hero-actions">
+
+      <a
+        href="#projects"
+        class="btn btn-primary"
+      >
+        Explore Projects
+      </a>
+
+      <a
+        href="https://github.com/z4304101"
+        target="_blank"
+        class="btn btn-secondary"
+      >
+        GitHub ↗
+      </a>
+
+    </div>
+
+    <div class="scroll-hint">
+
+      <div class="scroll-line"></div>
+
+      SCROLL TO EXPLORE
+
+    </div>
+
+  </main>
+
+
+  <!-- PROJECTS -->
+
+  <section
+    id="projects"
+    class="reveal"
+  >
+
+    <div class="section-number">
+      01 / PROJECTS
+    </div>
+
+    <h2 class="section-title">
+      Selected Work
+    </h2>
+
+    <p class="section-desc">
+
+      A collection of projects across intelligent agents,
+      robotics, automation and experimental systems.
+
+    </p>
+
+
+    <div class="project-grid">
+
+
+      <div class="project tilt">
+
+        <div class="project-index">
+          PROJECT_01
+        </div>
+
+        <h3>AI Agent</h3>
+
+        <p>
+
+          Intelligent agents,
+          workflows,
+          tool calling and automated reasoning systems.
+
+        </p>
+
+        <div class="tags">
+
+          <span class="tag">AGENT</span>
+
+          <span class="tag">WORKFLOW</span>
+
+          <span class="tag">AI</span>
+
+        </div>
+
+      </div>
+
+
+      <div class="project tilt">
+
+        <div class="project-index">
+          PROJECT_02
+        </div>
+
+        <h3>Robotics</h3>
+
+        <p>
+
+          Humanoid robotics,
+          autonomous systems,
+          reliability testing and intelligent machines.
+
+        </p>
+
+        <div class="tags">
+
+          <span class="tag">ROBOTICS</span>
+
+          <span class="tag">TESTING</span>
+
+          <span class="tag">AUTOMATION</span>
+
+        </div>
+
+      </div>
+
+
+      <div class="project tilt">
+
+        <div class="project-index">
+          PROJECT_03
+        </div>
+
+        <h3>Digital Employee</h3>
+
+        <p>
+
+          AI-powered business workflows
+          that automate repetitive operational tasks.
+
+        </p>
+
+        <div class="tags">
+
+          <span class="tag">AI</span>
+
+          <span class="tag">BUSINESS</span>
+
+          <span class="tag">AUTOMATION</span>
+
+        </div>
+
+      </div>
+
+
+      <div class="project tilt">
+
+        <div class="project-index">
+          PROJECT_04
+        </div>
+
+        <h3>AI News System</h3>
+
+        <p>
+
+          Automated intelligence pipeline
+          for discovering,
+          filtering and delivering AI industry news.
+
+        </p>
+
+        <div class="tags">
+
+          <span class="tag">NEWS</span>
+
+          <span class="tag">DATA</span>
+
+          <span class="tag">AI</span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ABOUT -->
+
+  <section
+    id="about"
+    class="reveal"
+  >
+
+    <div class="section-number">
+      02 / ABOUT
+    </div>
+
+    <h2 class="section-title">
+      Human × Machine
+    </h2>
+
+
+    <div class="about-grid">
+
+      <div class="about-text">
+
+        I explore the intersection of
+        artificial intelligence,
+        robotics,
+        software testing
+        and automation.
+
+        <br /><br />
+
+        My focus is building systems
+        that move beyond demos
+        and operate reliably
+        in real-world environments.
+
+      </div>
+
+
+      <div class="about-stats">
+
+        <div class="stat">
+
+          <div class="stat-value">
+            AI
+          </div>
+
+          <div class="stat-label">
+            Intelligent Systems
+          </div>
+
+        </div>
+
+
+        <div class="stat">
+
+          <div class="stat-value">
+            AGENT
+          </div>
+
+          <div class="stat-label">
+            Autonomous Workflows
+          </div>
+
+        </div>
+
+
+        <div class="stat">
+
+          <div class="stat-value">
+            ROBOT
+          </div>
+
+          <div class="stat-label">
+            Physical Intelligence
+          </div>
+
+        </div>
+
+
+        <div class="stat">
+
+          <div class="stat-value">
+            AUTO
+          </div>
+
+          <div class="stat-label">
+            Automation Engineering
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- STACK -->
+
+  <section
+    id="stack"
+    class="reveal"
+  >
+
+    <div class="section-number">
+      03 / STACK
+    </div>
+
+    <h2 class="section-title">
+      Technology
+    </h2>
+
+    <p class="section-desc">
+
+      Technologies and concepts
+      behind the systems I build.
+
+    </p>
+
+
+    <div class="tech-list">
+
+      <div class="tech">Python</div>
+
+      <div class="tech">AI Agent</div>
+
+      <div class="tech">LLM</div>
+
+      <div class="tech">Automation</div>
+
+      <div class="tech">GitHub</div>
+
+      <div class="tech">API</div>
+
+      <div class="tech">Robotics</div>
+
+      <div class="tech">Testing</div>
+
+      <div class="tech">FastAPI</div>
+
+      <div class="tech">Workflow</div>
+
+      <div class="tech">Linux</div>
+
+      <div class="tech">Cloud</div>
+
+    </div>
+
+  </section>
+
+
+  <!-- CONTACT -->
+
+  <section
+    id="contact"
+    class="reveal"
+  >
+
+    <div class="contact-box">
+
+      <div class="section-number">
+        04 / CONTACT
+      </div>
+
+      <h2 class="contact-title">
+
+        Let's build
+
+        <br />
+
+        something intelligent.
+
+      </h2>
+
+      <p>
+
+        AI · Robotics · Automation · Agents
+
+      </p>
+
+
+      <div class="hero-actions">
+
+        <a
+          href="https://github.com/z4304101"
+          target="_blank"
+          class="btn btn-primary"
+        >
+          GitHub
+        </a>
+
+        <a
+          href="mailto:your-email@example.com"
+          class="btn btn-secondary"
+        >
+          Email
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <span>
+      © 2026 LE POISON
+    </span>
+
+    <span>
+      lepoison.dev
+    </span>
+
+  </footer>
+
+
+<script>
+
+  /* =================================
+     TYPEWRITER
+  ================================= */
+
+  const words = [
+
+    "AI AGENTS",
+
+    "ROBOTICS",
+
+    "AUTOMATION",
+
+    "INTELLIGENT SYSTEMS"
+
+  ];
+
+
+  let wordIndex = 0;
+
+  let charIndex = 0;
+
+  let deleting = false;
+
+
+  const typewriter =
+    document.getElementById("typewriter");
+
+
+  function type() {
+
+    const word =
+      words[wordIndex];
+
+
+    if (!deleting) {
+
+      charIndex++;
+
+    } else {
+
+      charIndex--;
+
+    }
+
+
+    typewriter.textContent =
+      " " + word.substring(0, charIndex);
+
+
+    let speed =
+      deleting ? 45 : 85;
+
+
+    if (!deleting &&
+        charIndex === word.length) {
+
+      speed = 1400;
+
+      deleting = true;
+
+    }
+
+
+    else if (
+      deleting &&
+      charIndex === 0
+    ) {
+
+      deleting = false;
+
+      wordIndex =
+        (wordIndex + 1)
+        % words.length;
+
+      speed = 350;
+
+    }
+
+
+    setTimeout(type, speed);
+
+  }
+
+
+  type();
+
+
+
+  /* =================================
+     CURSOR GLOW
+  ================================= */
+
+  const glow =
+    document.getElementById(
+      "cursorGlow"
+    );
+
+
+  window.addEventListener(
+    "mousemove",
+    e => {
+
+      glow.style.left =
+        e.clientX + "px";
+
+      glow.style.top =
+        e.clientY + "px";
+
+    }
+  );
+
+
+
+  /* =================================
+     SCROLL REVEAL
+  ================================= */
+
+  const observer =
+    new IntersectionObserver(
+
+      entries => {
+
+        entries.forEach(
+          entry => {
+
+            if (
+              entry.isIntersecting
+            ) {
+
+              entry.target
+                .classList
+                .add("visible");
+
+            }
+
+          }
+        );
+
+      },
+
+      {
+
+        threshold: 0.12
+
+      }
+
+    );
+
+
+  document
+    .querySelectorAll(".reveal")
+    .forEach(
+      element =>
+        observer.observe(element)
+    );
+
+
+
+  /* =================================
+     TILT CARDS
+  ================================= */
+
+  document
+    .querySelectorAll(".tilt")
+    .forEach(card => {
+
+      card.addEventListener(
+        "mousemove",
+        e => {
+
+          const rect =
+            card.getBoundingClientRect();
+
+          const x =
+            e.clientX
+            - rect.left;
+
+          const y =
+            e.clientY
+            - rect.top;
+
+
+          const centerX =
+            rect.width / 2;
+
+          const centerY =
+            rect.height / 2;
+
+
+          const rotateX =
+            (y - centerY)
+            / 25;
+
+          const rotateY =
+            (centerX - x)
+            / 25;
+
+
+          card.style.transform =
+            `
+            perspective(900px)
+            rotateX(${rotateX}deg)
+            rotateY(${rotateY}deg)
+            translateY(-4px)
+            `;
+
+        }
+      );
+
+
+      card.addEventListener(
+        "mouseleave",
+        () => {
+
+          card.style.transform =
+            `
+            perspective(900px)
+            rotateX(0)
+            rotateY(0)
+            translateY(0)
+            `;
+
+        }
+      );
+
+    });
+
+
+
+  /* =================================
+     PARTICLES
+  ================================= */
+
+  const canvas =
+    document.getElementById(
+      "particles"
+    );
+
+  const ctx =
+    canvas.getContext("2d");
+
+
+  let particles = [];
+
+
+  function resizeCanvas() {
+
+    canvas.width =
+      window.innerWidth;
+
+    canvas.height =
+      window.innerHeight;
+
+  }
+
+
+  window.addEventListener(
+    "resize",
+    resizeCanvas
+  );
+
+
+  resizeCanvas();
+
+
+
+  class Particle {
+
+    constructor() {
+
+      this.x =
+        Math.random()
+        * canvas.width;
+
+      this.y =
+        Math.random()
+        * canvas.height;
+
+      this.vx =
+        (
+          Math.random()
+          - .5
+        )
+        * .35;
+
+      this.vy =
+        (
+          Math.random()
+          - .5
+        )
+        * .35;
+
+      this.size =
+        Math.random()
+        * 1.5
+        + .4;
+
+    }
+
+
+    update() {
+
+      this.x +=
+        this.vx;
+
+      this.y +=
+        this.vy;
+
+
+      if (
+        this.x < 0 ||
+        this.x > canvas.width
+      ) {
+
+        this.vx *= -1;
+
+      }
+
+
+      if (
+        this.y < 0 ||
+        this.y > canvas.height
+      ) {
+
+        this.vy *= -1;
+
+      }
+
+    }
+
+
+    draw() {
+
+      ctx.beginPath();
+
+      ctx.arc(
+        this.x,
+        this.y,
+        this.size,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fillStyle =
+        "rgba(145,170,255,.55)";
+
+      ctx.fill();
+
+    }
+
+  }
+
+
+
+  function createParticles() {
+
+    particles = [];
+
+    const amount =
+      Math.min(
+        80,
+        Math.floor(
+          window.innerWidth
+          / 18
+        )
+      );
+
+
+    for (
+      let i = 0;
+      i < amount;
+      i++
+    ) {
+
+      particles.push(
+        new Particle()
+      );
+
+    }
+
+  }
+
+
+  createParticles();
+
+
+
+  function animateParticles() {
+
+    ctx.clearRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+
+    particles.forEach(
+      particle => {
+
+        particle.update();
+
+        particle.draw();
+
+      }
+    );
+
+
+    for (
+      let i = 0;
+      i < particles.length;
+      i++
+    ) {
+
+      for (
+        let j = i + 1;
+        j < particles.length;
+        j++
+      ) {
+
+        const dx =
+          particles[i].x
+          - particles[j].x;
+
+        const dy =
+          particles[i].y
+          - particles[j].y;
+
+        const distance =
+          Math.sqrt(
+            dx * dx
+            + dy * dy
+          );
+
+
+        if (
+          distance < 120
+        ) {
+
+          ctx.beginPath();
+
+          ctx.moveTo(
+            particles[i].x,
+            particles[i].y
+          );
+
+          ctx.lineTo(
+            particles[j].x,
+            particles[j].y
+          );
+
+
+          ctx.strokeStyle =
+            `
+            rgba(
+              100,
+              140,
+              255,
+              ${0.08 * (1 - distance / 120)}
+            )
+            `;
+
+
+          ctx.stroke();
+
+        }
+
+      }
+
+    }
+
+
+    requestAnimationFrame(
+      animateParticles
+    );
+
+  }
+
+
+  animateParticles();
+
+</script>
 
 </body>
 </html>
